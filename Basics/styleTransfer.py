@@ -34,6 +34,11 @@ class UNetGenerator(nn.Module):
             nn.Tanh(),
         )
 
+    def forward(self, x):
+        encoder = self.encoder(x)
+        decoder = self.decoder(encoder)
+        return decoder
+
 class PhilippinePaintingsDataset(Dataset):
     def __init__(self,images,styles):
         self.images = images
@@ -61,7 +66,7 @@ class Discriminator(nn.Module):
         x = self.fc(features)
         return x
 
-def generate_stylized_image(generator, content_image, style_image, output_path):
+def generate_stylized_image(generator,content_image, style_image, output_path):
     with torch.no_grad():
         stylized_image = generator(style_image)
 
